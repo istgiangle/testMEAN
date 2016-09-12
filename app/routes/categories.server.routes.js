@@ -2,15 +2,16 @@
 
 module.exports = function(app) {
 	var categories = require('../../app/controllers/categories.server.controller');
+	var users = require('../controllers/users.server.controller');
 	
 	app.route('/categories')
-		.get(categories.list)
-		.post(categories.create);
+		.get(users.requiresLogin, categories.list)
+		.post(users.requiresLogin, categories.create);
 
 	app.route('/categories/:categoryId')
-		.get(categories.read)
-		.put(categories.update)
-		.delete(categories.delete);
+		.get(users.requiresLogin, categories.read)
+		.put(users.requiresLogin, categories.update)
+		.delete(users.requiresLogin, categories.delete);
 
 	// Finish by binding the article middleware
 	// What's this? Where the categoryId is present in the URL
